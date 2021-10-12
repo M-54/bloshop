@@ -17,3 +17,5 @@ mix.js('resources/js/app.js', 'public/js')
         require('tailwindcss'),
         require('autoprefixer'),
     ]);
+
+mix.css('resources/css/bootstrap.css', 'public/css');
