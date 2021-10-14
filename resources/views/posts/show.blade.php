@@ -98,19 +98,7 @@
                     From the Firehose
                 </h3>
 
-                @foreach($posts as $post)
-                    <x-post-component :post="$post"></x-post-component>
-                @endforeach
-
-{{--                <nav class="blog-pagination" aria-label="Pagination">--}}
-{{--                    <a class="btn btn-outline-primary" href="#">Older</a>--}}
-{{--                    <a class="btn btn-outline-secondary disabled">Newer</a>--}}
-{{--                </nav>--}}
-
-                <nav class="blog-pagination" aria-label="Pagination">
-                    {{ $posts->links('pagination::bootstrap-4') }}
-                </nav>
-
+                <x-post-component :post="$post"></x-post-component>
             </div>
 
             <div class="col-md-4">

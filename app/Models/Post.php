@@ -37,6 +37,11 @@ class Post extends Model
         return $this->belongsToMany(Tag::class);
     }
 
+    public function images()
+    {
+        return $this->morphMany(Image::class, 'imageable');
+    }
+
     public function sluggable(): array
     {
         return [
@@ -44,5 +49,10 @@ class Post extends Model
                 'source' => 'title'
             ]
         ];
+    }
+
+    public function getMainImageAttribute()
+    {
+        return $this->images()->first();
     }
 }

@@ -9,6 +9,7 @@ class PostComponent extends Component
 {
 
     public $post;
+    public $showImage;
 
     /**
      * Create a new component instance.
@@ -18,6 +19,7 @@ class PostComponent extends Component
     public function __construct(Post $post)
     {
         $this->post = $post;
+        $this->showImage = request()->routeIs('posts.*');
     }
 
     /**

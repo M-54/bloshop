@@ -47,7 +47,7 @@ class PostController extends Controller
 
         $validated = $request->validated();
 
-        $post = DB::transaction(function () use ($validated) {
+        $post = DB::transaction(function () use ($validated, $request) {
             $post = auth()->user()->posts()->create($validated);
 
             if (isset($validated['category_id']))
@@ -55,6 +55,12 @@ class PostController extends Controller
 
             if (isset($validated['tag_id']))
                 $post->tags()->sync($validated['tag_id']);
+
+            $path = $request->file('image')->storePublicly('posts');
+            $post->images()->create([
+                'url' => $path,
+                'name' => $request->file('image')->getFilename(),
+            ]);
 
             return $post;
         });
@@ -72,7 +78,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        return view('posts.show', compact('post'));
     }
 
     /**

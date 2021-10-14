@@ -29,7 +29,7 @@
             </div>
 
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <form action="{{ route('posts.store') }}" method="post">
+                <form action="{{ route('posts.store') }}" method="post" enctype="multipart/form-data">
                     @csrf
 
                     <div class="p-6 space-y-8">
@@ -78,6 +78,13 @@
                             </label>
                             <textarea name="content" id="content" class="textarea textarea-bordered"
                                       placeholder="Content" rows="8" required>{{ old('content') }}</textarea>
+                        </div>
+
+                        <div class="form-control">
+                            <label class="label" for="image">
+                                <span class="label-text">Image</span>
+                            </label>
+                            <input type="file" name="image" id="image" class="input input-bordered" required>
                         </div>
 
                         <button type="submit" class="btn btn-lg w-full">Save</button>

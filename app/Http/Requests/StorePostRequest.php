@@ -33,6 +33,7 @@ class StorePostRequest extends FormRequest
             ],
             'category_id.*' => 'exists:categories,id',
             'tag_id.*' => 'exists:tags,id',
+            'image' => 'required|image'
         ];
     }
 }
