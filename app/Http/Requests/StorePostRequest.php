@@ -31,6 +31,8 @@ class StorePostRequest extends FormRequest
                 'required',
                 Rule::in(['draft', 'published']),
             ],
+            'category_id.*' => 'exists:categories,id',
+            'tag_id.*' => 'exists:tags,id',
         ];
     }
 }

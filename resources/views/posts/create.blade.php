@@ -39,6 +39,30 @@
                             <option value="published">Published</option>
                         </select>
 
+                        <div class="grid grid-flow-col auto-cols-auto gap-8">
+                            <div>
+                                <label class="label" for="category_id">
+                                    <span class="label-text">Categories</span>
+                                </label>
+                                <select name="category_id[]" id="category_id" class="select select-bordered w-full h-24"
+                                        multiple>
+                                    @foreach($categories as $category)
+                                        <option value="{{ $category->id }}">{{ $category->title }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="label" for="tag_id">
+                                    <span class="label-text">Tags</span>
+                                </label>
+                                <select name="tag_id[]" id="tag_id" class="select select-bordered w-full h-24" multiple>
+                                    @foreach($tags as $tag)
+                                        <option value="{{ $tag->id }}">{{ $tag->title }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
 
                         <div class="form-control">
                             <label class="label" for="name">

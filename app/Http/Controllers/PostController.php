@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePostRequest;
+use App\Models\Category;
 use App\Models\Post;
-use Illuminate\Http\Request;
-use Illuminate\Support\Str;
+use App\Models\Tag;
+use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
@@ -28,13 +29,16 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('posts.create');
+        $categories = Category::all();
+        $tags = Tag::all();
+
+        return view('posts.create', compact('categories', 'tags'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(StorePostRequest $request)
@@ -43,11 +47,17 @@ class PostController extends Controller
 
         $validated = $request->validated();
 
-//        $post = Post::create(array_merge($validated, [
-//            'author_id' => auth()->id(),
-//            'slug' => Str::slug($validated['title'])
-//        ]));
-        $post = auth()->user()->posts()->create($validated);
+        $post = DB::transaction(function () use ($validated) {
+            $post = auth()->user()->posts()->create($validated);
+
+            if (isset($validated['category_id']))
+                $post->categories()->sync($validated['category_id']);
+
+            if (isset($validated['tag_id']))
+                $post->tags()->sync($validated['tag_id']);
+
+            return $post;
+        });
 
         return redirect()
             ->route('posts.index')
@@ -57,7 +67,7 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Post  $post
+     * @param \App\Models\Post $post
      * @return \Illuminate\Http\Response
      */
     public function show(Post $post)
@@ -68,7 +78,7 @@ class PostController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Post  $post
+     * @param \App\Models\Post $post
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function edit(Post $post)
@@ -79,8 +89,8 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Post  $post
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Post $post
      * @return \Illuminate\Http\Response
      */
     public function update(StorePostRequest $request, Post $post)
@@ -97,7 +107,7 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Post  $post
+     * @param \App\Models\Post $post
      * @return \Illuminate\Http\Response
      */
     public function destroy(Post $post)
