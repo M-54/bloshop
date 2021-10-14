@@ -26,10 +26,18 @@ Route::get('/home', \App\Http\Controllers\HomeController::class);
 Route::group([
     'middleware' => 'auth'
 ], function () {
-
     Route::view('/dashboard', 'dashboard')->name('dashboard');
 
     Route::resource('posts', \App\Http\Controllers\PostController::class);
+
+    Route::get('catag', [\App\Http\Controllers\CatagController::class, 'index'])->name('catag.index');
+    Route::get('catag/create', [\App\Http\Controllers\CatagController::class, 'create'])->name('catag.create');
+    Route::post('catag', [\App\Http\Controllers\CatagController::class, 'store'])->name('catag.store');
+
+    Route::resource('categories', \App\Http\Controllers\CategoryController::class)
+        ->except(['index', 'create', 'store']);
+    Route::resource('tags', \App\Http\Controllers\TagController::class)
+        ->except(['index', 'create', 'store']);
 });
 
 require __DIR__.'/auth.php';
