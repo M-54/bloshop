@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePostRequest;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
@@ -14,7 +16,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::paginate();
+        $posts = Post::latest()->paginate();
 
         return view('posts.index', compact('posts'));
     }
@@ -26,18 +28,30 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return view('posts.create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(StorePostRequest $request)
     {
-        //
+        #$request->request->set('author_id', auth()->id());
+
+        $validated = $request->validated();
+
+//        $post = Post::create(array_merge($validated, [
+//            'author_id' => auth()->id(),
+//            'slug' => Str::slug($validated['title'])
+//        ]));
+        $post = auth()->user()->posts()->create($validated);
+
+        return redirect()
+            ->route('posts.index')
+            ->with('message', "Post $post->title Created Successfully!");
     }
 
     /**
@@ -55,11 +69,11 @@ class PostController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Post  $post
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function edit(Post $post)
     {
-        //
+        return view('posts.edit', compact('post'));
     }
 
     /**
@@ -69,9 +83,15 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Post $post)
+    public function update(StorePostRequest $request, Post $post)
     {
-        //
+        $validated = $request->validated();
+
+        $post->update($validated);
+
+        return redirect()
+            ->route('posts.index')
+            ->with('message', "Post $post->title Updated Successfully!");
     }
 
     /**
