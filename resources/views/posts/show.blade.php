@@ -138,6 +138,37 @@
                                 {{ $comment->content }}
                             </div>
                         </div>
+
+                        @foreach($comment->replies as $reply)
+                            <div class="d-flex align-items-center mb-4 mx-4" id="comment_{{ $reply->id }}">
+                                <div class="flex-shrink-0">
+                                    <img src="https://ui-avatars.com/api/?name={{ $reply->user->name }}"
+                                         alt="{{ $reply->user->name }}">
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <h3 class="d-block">{{ $reply->user->name }} says:</h3>
+                                    {{ $reply->content }}
+                                </div>
+                            </div>
+                        @endforeach
+
+                        <form action="{{ route('comments.store') }}" method="post" class="mb-5">
+                            @csrf
+
+                            <input type="hidden" name="post_id" value="{{ $post->id }}">
+                            <input type="hidden" name="parent_id" value="{{ $comment->id }}">
+
+                            <div class="mb-3">
+                                <label for="comment" class="form-label">Your Comment:</label>
+                                <textarea class="form-control" name="content" id="comment" rows="3" required></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+
+                        @if(!$loop->last)
+                            <hr>
+                        @endif
                     @empty
                         <p>No Comments. Send First Comment ...</p>
                     @endforelse

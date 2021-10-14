@@ -34,6 +34,7 @@ class CommentController extends Controller
         ]);
 
         $comment = auth()->user()->comments()->create([
+            'parent_id' => $request->get('parent_id'),
             'post_id' => $request->get('post_id'),
             'content' => $request->get('content')
         ]);
