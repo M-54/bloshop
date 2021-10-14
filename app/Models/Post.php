@@ -17,6 +17,11 @@ class Post extends Model
         'author_id', 'title', 'slug', 'content', 'status'
     ];
 
+    protected $withCount = [
+        'images',
+        'comments'
+    ];
+
     /*public function setTitleAttribute($value)
     {
         $this->attributes['slug'] = Str::slug($value);
@@ -40,6 +45,11 @@ class Post extends Model
     public function images()
     {
         return $this->morphMany(Image::class, 'imageable');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
     }
 
     public function sluggable(): array

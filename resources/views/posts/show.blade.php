@@ -99,6 +99,49 @@
                 </h3>
 
                 <x-post-component :post="$post"></x-post-component>
+
+                <hr>
+
+                <div id="comments">
+                    <h2 class="mb-4">Comments ({{ $post->comments_count }})</h2>
+
+                    @if(session('message'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ session('message') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
+
+                    @auth
+                        <form action="{{ route('comments.store') }}" method="post" id="new_comment" class="mb-5">
+                            @csrf
+
+                            <input type="hidden" name="post_id" value="{{ $post->id }}">
+
+                            <div class="mb-3">
+                                <label for="comment" class="form-label">Your Comment:</label>
+                                <textarea class="form-control" name="content" id="comment" rows="3" required></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    @endauth
+
+                    @forelse($post->comments as $comment)
+                        <div class="d-flex align-items-center mb-4" id="comment_{{ $comment->id }}">
+                            <div class="flex-shrink-0">
+                                <img src="https://ui-avatars.com/api/?name={{ $comment->user->name }}"
+                                     alt="{{ $comment->user->name }}">
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h3 class="d-block">{{ $comment->user->name }} says:</h3>
+                                {{ $comment->content }}
+                            </div>
+                        </div>
+                    @empty
+                        <p>No Comments. Send First Comment ...</p>
+                    @endforelse
+                </div>
             </div>
 
             <div class="col-md-4">

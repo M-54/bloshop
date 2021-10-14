@@ -23,12 +23,15 @@ Route::get('/home', \App\Http\Controllers\HomeController::class);
 //    return view('dashboard');
 //})->middleware(['auth'])->name('dashboard');
 
+Route::get('posts/{post}', [\App\Http\Controllers\PostController::class, 'show'])->name('posts.show');
+
 Route::group([
     'middleware' => 'auth'
 ], function () {
     Route::view('/dashboard', 'dashboard')->name('dashboard');
 
-    Route::resource('posts', \App\Http\Controllers\PostController::class);
+    Route::resource('posts', \App\Http\Controllers\PostController::class)
+        ->except(['show']);
 
     Route::get('catag', [\App\Http\Controllers\CatagController::class, 'index'])->name('catag.index');
     Route::get('catag/create', [\App\Http\Controllers\CatagController::class, 'create'])->name('catag.create');
@@ -38,6 +41,9 @@ Route::group([
         ->except(['index', 'create', 'store']);
     Route::resource('tags', \App\Http\Controllers\TagController::class)
         ->except(['index', 'create', 'store']);
+
+    Route::resource('comments', \App\Http\Controllers\CommentController::class)
+        ->except(['create']);
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

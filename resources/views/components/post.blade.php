@@ -1,6 +1,6 @@
 <article class="blog-post">
     @if($showImage)
-        @if(count($post->images) == 1)
+        @if($post->iamges_count == 1)
             <div class="ratio ratio-16x9 mb-5">
                 <img src="{{ \Illuminate\Support\Facades\Storage::url(optional($post->main_image)->url) }}"
                      alt="{{ optional($post->main_image)->name }}"
