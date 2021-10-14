@@ -59,8 +59,16 @@ class PostController extends Controller
             $path = $request->file('image')->storePublicly('posts');
             $post->images()->create([
                 'url' => $path,
-                'name' => $request->file('image')->getFilename(),
+                'name' => $request->file('image')->getClientOriginalName(),
             ]);
+
+            foreach ($request->file('gallery') as $file) {
+                $path = $file->storePublicly("posts/gallery/$post->id");
+                $post->images()->create([
+                    'url' => $path,
+                    'name' => $file->getClientOriginalName(),
+                ]);
+            }
 
             return $post;
         });

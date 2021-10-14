@@ -87,6 +87,13 @@
                             <input type="file" name="image" id="image" class="input input-bordered" required>
                         </div>
 
+                        <div class="form-control">
+                            <label class="label" for="gallery">
+                                <span class="label-text">Gallery</span>
+                            </label>
+                            <input type="file" name="gallery[]" id="gallery" class="input input-bordered" required multiple>
+                        </div>
+
                         <button type="submit" class="btn btn-lg w-full">Save</button>
                     </div>
                 </form>
