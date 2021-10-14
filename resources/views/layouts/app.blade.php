@@ -31,6 +31,19 @@
             <main>
                 {{ $slot }}
             </main>
+
+            <script>
+                document.addEventListener("DOMContentLoaded", function(event) {
+                    @if(session('message'))
+                        sweetAlert.fire({
+                            title: 'Message',
+                            text: '{{ session('message') }}',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        })
+                    @endif
+                });
+            </script>
         </div>
     </body>
 </html>
