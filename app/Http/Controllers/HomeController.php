@@ -15,7 +15,7 @@ class HomeController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $posts = Post::latest()->paginate();
+        $posts = Post::published()->latest()->paginate();
 
         return view('home.home')
             ->with('posts', $posts);

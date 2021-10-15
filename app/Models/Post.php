@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Traits\Likeable;
 use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -81,5 +82,9 @@ class Post extends Model
                 'source' => 'title'
             ]
         ];
+    }
+
+    public function scopePublished(Builder $query) {
+        return $query->where('status', 'published');
     }
 }

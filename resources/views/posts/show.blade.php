@@ -100,7 +100,7 @@
 
                 <x-post-component :post="$post"></x-post-component>
 
-                <div id="post_like" class="flex">
+                <div id="post_like" class="d-flex">
                     <button class="btn btn-primary like" onclick="like()">
                         <i class="bi bi-hand-thumbs-up"></i>
                         (<span>{{ $post->count_like() }}</span>)
@@ -246,7 +246,8 @@
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 },
                 body: JSON.stringify({
-                    'post_id': {{ $post->id }},
+                    'likeable': 'post',
+                    'id': {{ $post->id }},
                     'liked': like
                 })
             }).then(response => response.json())
@@ -255,6 +256,25 @@
                     //document.getElementById('post_like').getElementsByClassName('dislike')[0].getElementsByTagName('span')[0].innerHTML = data.data.count_dislike;
                     document.querySelector('#post_like .like span').innerHTML = data.data.count_like;
                     document.querySelector('#post_like .dislike span').innerHTML = data.data.count_dislike;
+                });
+        }
+
+        function comment_like(id, like = true) {
+            fetch('{{ route('likes.store') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    'likeable': 'comment',
+                    'id': id,
+                    'liked': like
+                })
+            }).then(response => response.json())
+                .then(data => {
+                    document.querySelector(`#comment_like_${id} .like span`).innerHTML = data.data.count_like;
+                    document.querySelector(`#comment_like_${id} .dislike span`).innerHTML = data.data.count_dislike;
                 });
         }
     </script>

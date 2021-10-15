@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Like;
-use App\Models\Post;
 use Illuminate\Http\Request;
 
 class LikeController extends Controller
@@ -37,18 +36,20 @@ class LikeController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'post_id' => 'required',
+            'likeable' => 'required',
+            'id' => 'required',
             'liked' => 'required|boolean',
         ]);
 
-        $post = Post::findOrFail($request->get('post_id'));
-        $post->like($request->get('liked'));
+        $class = "\App\Models\\" . ucfirst($request->get('likeable'));
+        $likeable = $class::findOrFail($request->get('id'));
+        $likeable->like($request->get('liked'));
 
         return response()
             ->json([
                 'data' => [
-                    'count_like' => $post->count_like(),
-                    'count_dislike' => $post->count_like(false)
+                    'count_like' => $likeable->count_like(),
+                    'count_dislike' => $likeable->count_like(false)
                 ],
                 'message' => sprintf('Post %s Successfully!', $request->get('liked') ? 'Liked' : 'Dislike')
             ]);

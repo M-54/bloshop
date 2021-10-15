@@ -1,12 +1,25 @@
 <div class="mx-4 p-2" style="border-left: 1px solid #ccc;">
-    <div class="d-flex align-items-center mb-4" id="comment_{{ $comment->id }}">
-        <div class="flex-shrink-0">
-            <img src="https://ui-avatars.com/api/?name={{ $comment->user->name }}"
-                 alt="{{ $comment->user->name }}">
+    <div class="d-flex flex-row justify-content-between">
+        <div class="d-flex align-items-center mb-4" id="comment_{{ $comment->id }}">
+            <div class="flex-shrink-0">
+                <img src="https://ui-avatars.com/api/?name={{ $comment->user->name }}"
+                     alt="{{ $comment->user->name }}">
+            </div>
+            <div class="flex-grow-1 ms-3">
+                <h3 class="d-block">{{ $comment->user->name }} says:</h3>
+                {{ $comment->content }}
+            </div>
         </div>
-        <div class="flex-grow-1 ms-3">
-            <h3 class="d-block">{{ $comment->user->name }} says:</h3>
-            {{ $comment->content }}
+
+        <div id="comment_like_{{ $comment->id }}" class="d-flex flex-column">
+            <button class="btn btn-primary btn-sm like" onclick="comment_like({{ $comment->id }})">
+                <i class="bi bi-hand-thumbs-up"></i>
+                (<span>{{ $comment->count_like() }}</span>)
+            </button>
+            <button class="btn btn-danger btn-sm dislike" onclick="comment_like({{ $comment->id }}, false)">
+                <i class="bi bi-hand-thumbs-down"></i>
+                (<span>{{ $comment->count_like(false) }}</span>)
+            </button>
         </div>
     </div>
 
