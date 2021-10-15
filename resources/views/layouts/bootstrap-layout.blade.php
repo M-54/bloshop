@@ -28,10 +28,30 @@
         });
 
         var channel = pusher.subscribe('comment-like');
-        channel.bind('App\\Events\\CommentLiked', function(data) {
+        channel.bind('App\\Events\\CommentLiked', function (data) {
             document.querySelector(`#comment_like_${data.like.likeable_id} .like span`).innerHTML = data.count.count_like;
             document.querySelector(`#comment_like_${data.like.likeable_id} .dislike span`).innerHTML = data.count.count_dislike;
         });
+
+        pusher.subscribe('new-post-channel')
+            .bind('new-post', function (data) {
+                const Toast = sweetAlert.mixin({
+                    toast: true,
+                    position: 'bottom-right',
+                    showConfirmButton: false,
+                    timer: 7000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', sweetAlert.stopTimer)
+                        toast.addEventListener('mouseleave', sweetAlert.resumeTimer)
+                    }
+                })
+
+                Toast.fire({
+                    icon: 'success',
+                    title: 'مطلب جدیدی در سایت منتشر شد. صفحه را بروزرسانی کنید.'
+                })
+            });
     </script>
 </head>
 <body>

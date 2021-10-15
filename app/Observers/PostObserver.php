@@ -2,8 +2,8 @@
 
 namespace App\Observers;
 
+use App\Events\NewPost;
 use App\Models\Post;
-use Illuminate\Support\Str;
 
 class PostObserver
 {
@@ -15,18 +15,19 @@ class PostObserver
     /**
      * Handle the Post "created" event.
      *
-     * @param  \App\Models\Post  $post
+     * @param \App\Models\Post $post
      * @return void
      */
     public function created(Post $post)
     {
-        //
+        if ($post->status == 'published')
+            broadcast(new NewPost($post));
     }
 
     /**
      * Handle the Post "updated" event.
      *
-     * @param  \App\Models\Post  $post
+     * @param \App\Models\Post $post
      * @return void
      */
     public function updated(Post $post)
@@ -37,7 +38,7 @@ class PostObserver
     /**
      * Handle the Post "deleted" event.
      *
-     * @param  \App\Models\Post  $post
+     * @param \App\Models\Post $post
      * @return void
      */
     public function deleted(Post $post)
@@ -48,7 +49,7 @@ class PostObserver
     /**
      * Handle the Post "restored" event.
      *
-     * @param  \App\Models\Post  $post
+     * @param \App\Models\Post $post
      * @return void
      */
     public function restored(Post $post)
@@ -59,7 +60,7 @@ class PostObserver
     /**
      * Handle the Post "force deleted" event.
      *
-     * @param  \App\Models\Post  $post
+     * @param \App\Models\Post $post
      * @return void
      */
     public function forceDeleted(Post $post)
