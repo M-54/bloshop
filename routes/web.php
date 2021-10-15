@@ -23,8 +23,6 @@ Route::get('/home', \App\Http\Controllers\HomeController::class);
 //    return view('dashboard');
 //})->middleware(['auth'])->name('dashboard');
 
-Route::get('posts/{post}', [\App\Http\Controllers\PostController::class, 'show'])->name('posts.show');
-
 Route::group([
     'middleware' => 'auth'
 ], function () {
@@ -45,5 +43,7 @@ Route::group([
     Route::resource('comments', \App\Http\Controllers\CommentController::class)
         ->except(['create']);
 });
+
+Route::get('posts/{post}', [\App\Http\Controllers\PostController::class, 'show'])->name('posts.show');
 
 require __DIR__ . '/auth.php';
