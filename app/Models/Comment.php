@@ -13,6 +13,10 @@ class Comment extends Model
         'parent_id', 'user_id', 'post_id', 'content'
     ];
 
+    protected $with = [
+        'user'
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);

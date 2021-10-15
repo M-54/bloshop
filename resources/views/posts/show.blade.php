@@ -128,7 +128,9 @@
                     @endauth
 
                     @forelse($post->comments as $comment)
-                        <div class="d-flex align-items-center mb-4" id="comment_{{ $comment->id }}">
+                        <x-comment-component :comment="$comment" :post="$post" class="bg-secondary"></x-comment-component>
+
+                        {{--<div class="d-flex align-items-center mb-4" id="comment_{{ $comment->id }}">
                             <div class="flex-shrink-0">
                                 <img src="https://ui-avatars.com/api/?name={{ $comment->user->name }}"
                                      alt="{{ $comment->user->name }}">
@@ -164,7 +166,7 @@
                             </div>
 
                             <button type="submit" class="btn btn-primary">Submit</button>
-                        </form>
+                        </form>--}}
 
                         @if(!$loop->last)
                             <hr>
