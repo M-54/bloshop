@@ -22,6 +22,10 @@ class Post extends Model
         'comments'
     ];
 
+    protected $appends = [
+        'count_comments'
+    ];
+
     /*public function setTitleAttribute($value)
     {
         $this->attributes['slug'] = Str::slug($value);
@@ -51,6 +55,11 @@ class Post extends Model
     {
         return $this->hasMany(Comment::class)
             ->whereNull('parent_id');
+    }
+
+    public function getCountCommentsAttribute()
+    {
+        return Comment::query()->where('post_id', $this->id)->count();
     }
 
     public function sluggable(): array

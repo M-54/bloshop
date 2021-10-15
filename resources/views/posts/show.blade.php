@@ -103,7 +103,7 @@
                 <hr>
 
                 <div id="comments">
-                    <h2 class="mb-4">Comments ({{ $post->comments_count }})</h2>
+                    <h2 class="mb-4">Comments ({{ $post->count_comments }})</h2>
 
                     @if(session('message'))
                         <div class="alert alert-success alert-dismissible fade show" role="alert">
