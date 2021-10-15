@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Likeable;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,6 +13,7 @@ class Post extends Model
     use HasFactory;
     use SoftDeletes;
     use Sluggable;
+    use Likeable;
 
     protected $fillable = [
         'author_id', 'title', 'slug', 'content', 'status'
@@ -57,9 +59,19 @@ class Post extends Model
             ->whereNull('parent_id');
     }
 
+    public function likes()
+    {
+        return $this->morphMany(Like::class, 'likeable');
+    }
+
     public function getCountCommentsAttribute()
     {
         return Comment::query()->where('post_id', $this->id)->count();
+    }
+
+    public function getMainImageAttribute()
+    {
+        return $this->images()->first();
     }
 
     public function sluggable(): array
@@ -69,10 +81,5 @@ class Post extends Model
                 'source' => 'title'
             ]
         ];
-    }
-
-    public function getMainImageAttribute()
-    {
-        return $this->images()->first();
     }
 }

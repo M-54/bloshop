@@ -100,6 +100,17 @@
 
                 <x-post-component :post="$post"></x-post-component>
 
+                <div id="post_like" class="flex">
+                    <button class="btn btn-primary like" onclick="like()">
+                        <i class="bi bi-hand-thumbs-up"></i>
+                        (<span>{{ $post->count_like() }}</span>)
+                    </button>
+                    <button class="btn btn-danger dislike" onclick="like(false)">
+                        <i class="bi bi-hand-thumbs-down"></i>
+                        (<span>{{ $post->count_like(false) }}</span>)
+                    </button>
+                </div>
+
                 <hr>
 
                 <div id="comments">
@@ -128,7 +139,8 @@
                     @endauth
 
                     @forelse($post->comments as $comment)
-                        <x-comment-component :comment="$comment" :post="$post" class="bg-secondary"></x-comment-component>
+                        <x-comment-component :comment="$comment" :post="$post"
+                                             class="bg-secondary"></x-comment-component>
 
                         {{--<div class="d-flex align-items-center mb-4" id="comment_{{ $comment->id }}">
                             <div class="flex-shrink-0">
@@ -224,4 +236,26 @@
             <a href="#">Back to top</a>
         </p>
     </footer>
+
+    <script>
+        function like(like = true) {
+            fetch('{{ route('likes.store') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    'post_id': {{ $post->id }},
+                    'liked': like
+                })
+            }).then(response => response.json())
+                .then(data => {
+                    //document.getElementById('post_like').getElementsByClassName('like')[0].getElementsByTagName('span')[0].innerHTML = data.data.count_like;
+                    //document.getElementById('post_like').getElementsByClassName('dislike')[0].getElementsByTagName('span')[0].innerHTML = data.data.count_dislike;
+                    document.querySelector('#post_like .like span').innerHTML = data.data.count_like;
+                    document.querySelector('#post_like .dislike span').innerHTML = data.data.count_dislike;
+                });
+        }
+    </script>
 </x-bootstrap-layout>

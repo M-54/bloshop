@@ -42,6 +42,8 @@ Route::group([
 
     Route::resource('comments', \App\Http\Controllers\CommentController::class)
         ->except(['create']);
+
+    Route::resource('likes', \App\Http\Controllers\LikeController::class);
 });
 
 Route::get('posts/{post}', [\App\Http\Controllers\PostController::class, 'show'])->name('posts.show');

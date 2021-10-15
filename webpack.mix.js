@@ -19,3 +19,7 @@ mix.js('resources/js/app.js', 'public/js')
     ]);
 
 mix.css('resources/css/bootstrap.css', 'public/css');
+
+mix.browserSync({
+    'proxy': process.env.APP_URL
+});
