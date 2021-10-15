@@ -87,4 +87,8 @@ class Post extends Model
     public function scopePublished(Builder $query) {
         return $query->where('status', 'published');
     }
+
+    public function scopeDraft(Builder $query) {
+        return $query->where('status', 'draft');
+    }
 }

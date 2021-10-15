@@ -25,6 +25,19 @@
             @endif
 
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <form action="{{ route('posts.index') }}" class="p-4 w-full grid auto-cols-auto grid-flow-col gap-4 items-end">
+                    <input type="text" name="title" id="title" placeholder="Title" class="input input-bordered"
+                               value="{{ old('title', request('title')) }}">
+
+                    <select name="status" class="select select-bordered w-full">
+                        <option value="all" selected="selected">All</option>
+                        <option value="draft" @if(request('status') == 'draft') selected @endif>Draft</option>
+                        <option value="published" @if(request('status') == 'published') selected @endif>Published</option>
+                    </select>
+
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </form>
+
                 <table class="table w-full table-zebra">
                     <thead>
                     <tr>

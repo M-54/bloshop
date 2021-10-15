@@ -17,7 +17,18 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::latest()->paginate();
+        $status = request('status');
+
+        $posts = Post::query()
+            ->where('title', 'LIKE', "%" . request('title') . "%")
+            //->when(request('status') != 'all', fn($query) => $query->where('status', request('status')))
+            /*->when(request('status') != 'all', function ($query) use ($status) {
+                $query->where('status', $status);
+            })*/
+            ->when(request('status') != 'all', function ($query) use ($status) {
+                $query->scopes($status);
+            })
+            ->latest()->paginate();
 
         return view('posts.index', compact('posts'));
     }

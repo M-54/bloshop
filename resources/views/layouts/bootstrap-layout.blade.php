@@ -16,6 +16,23 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+
+    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+    <script>
+
+        // Enable pusher logging - don't include this in production
+        Pusher.logToConsole = true;
+
+        var pusher = new Pusher('7afcbbcd2953f8573ab9', {
+            cluster: 'eu'
+        });
+
+        var channel = pusher.subscribe('comment-like');
+        channel.bind('App\\Events\\CommentLiked', function(data) {
+            document.querySelector(`#comment_like_${data.like.likeable_id} .like span`).innerHTML = data.count.count_like;
+            document.querySelector(`#comment_like_${data.like.likeable_id} .dislike span`).innerHTML = data.count.count_dislike;
+        });
+    </script>
 </head>
 <body>
 <main>

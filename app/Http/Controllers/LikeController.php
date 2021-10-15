@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\CommentLiked;
 use App\Models\Like;
 use Illuminate\Http\Request;
 
@@ -43,7 +44,10 @@ class LikeController extends Controller
 
         $class = "\App\Models\\" . ucfirst($request->get('likeable'));
         $likeable = $class::findOrFail($request->get('id'));
-        $likeable->like($request->get('liked'));
+        $like = $likeable->like($request->get('liked'));
+
+//        event(new CommentLiked($like));
+        broadcast(new CommentLiked($like))->toOthers();
 
         return response()
             ->json([

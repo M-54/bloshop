@@ -273,8 +273,8 @@
                 })
             }).then(response => response.json())
                 .then(data => {
-                    document.querySelector(`#comment_like_${id} .like span`).innerHTML = data.data.count_like;
-                    document.querySelector(`#comment_like_${id} .dislike span`).innerHTML = data.data.count_dislike;
+                    // document.querySelector(`#comment_like_${id} .like span`).innerHTML = data.data.count_like;
+                    // document.querySelector(`#comment_like_${id} .dislike span`).innerHTML = data.data.count_dislike;
                 });
         }
     </script>

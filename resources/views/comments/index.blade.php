@@ -21,12 +21,24 @@
             @endif
 
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <form action="{{ route('comments.index') }}" class="p-4 w-full grid auto-cols-auto grid-flow-col gap-4 items-end">
+                    <select name="orderBy" class="select select-bordered w-full">
+                        <option value="none" selected="selected">None</option>
+                        <option value="like" @if(request('orderBy') == 'like') selected @endif>Like</option>
+                        <option value="dislike" @if(request('orderBy') == 'dislike') selected @endif>Dislike</option>
+                    </select>
+
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </form>
+
                 <table class="table w-full table-zebra">
                     <thead>
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">User</th>
                         <th scope="col">Post</th>
+                        <th scope="col">Likes</th>
+                        <th scope="col">Dislikes</th>
                         <th scope="col">Actions</th>
                     </tr>
                     </thead>
@@ -36,6 +48,8 @@
                             <th scope="row">{{ $comment->id }}</th>
                             <td>{{ $comment->user->name }}</td>
                             <td>{{ $comment->post->title }}</td>
+                            <td>{{ $comment->count_like() }}</td>
+                            <td>{{ $comment->count_like(false) }}</td>
                             <td>
                                 <a href="{{ route('comments.edit', $comment) }}" class="btn btn-xs">Edit</a>
                             </td>

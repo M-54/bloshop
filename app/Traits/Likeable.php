@@ -22,4 +22,8 @@ trait Likeable
     {
         return $this->likes()->where('liked', $liked)->count();
     }
+
+    public function scopeLiked($query, $liked) {
+        return $query->where('liked', $liked);
+    }
 }
