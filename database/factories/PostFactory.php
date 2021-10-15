@@ -22,7 +22,6 @@ class PostFactory extends Factory
     public function definition()
     {
         return [
-            'author_id' => 1,
             'title' => $this->faker->words(8, true),
             'slug' => $this->faker->slug,
             'content' => $this->faker->realText,

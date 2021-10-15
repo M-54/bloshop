@@ -10,6 +10,14 @@ use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->authorizeResource(Post::class, 'post', [
+            'except' => ['show']
+        ]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -19,7 +27,7 @@ class PostController extends Controller
     {
         $status = request('status');
 
-        $posts = Post::query()
+        $posts = auth()->user()->posts()
             ->where('title', 'LIKE', "%" . request('title') . "%")
             //->when(request('status') != 'all', fn($query) => $query->where('status', request('status')))
             /*->when(request('status') != 'all', function ($query) use ($status) {
@@ -97,6 +105,9 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
+        if ($post->status == 'draft')
+            return abort(404);
+
         return view('posts.show', compact('post'));
     }
 
