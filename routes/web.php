@@ -18,6 +18,9 @@ Route::get('/', function () {
 });
 
 Route::get('/home', \App\Http\Controllers\HomeController::class);
+Route::get('/shop', \App\Http\Controllers\ShopController::class);
+
+Route::get('cart', \App\Http\Controllers\CartController::class)->name('cart');
 
 //Route::get('/dashboard', function () {
 //    return view('dashboard');
@@ -64,3 +67,7 @@ Route::get('get', function () {
 });
 
 Route::get('sample', \App\Http\Controllers\SampleController::class);
+
+Route::get('clearsession', function () {
+    session()->flush();
+});

@@ -46,6 +46,11 @@ class Product extends Model
         return $this->morphMany(Image::class, 'imageable');
     }
 
+    public function getPriceAttribute()
+    {
+        return $this->variations()->orderBy('price')->first()->price;
+    }
+
     public function sluggable(): array
     {
         return [
