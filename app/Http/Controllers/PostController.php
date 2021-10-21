@@ -6,6 +6,7 @@ use App\Http\Requests\StorePostRequest;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\Tag;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
@@ -27,16 +28,47 @@ class PostController extends Controller
     {
         $status = request('status');
 
-        $posts = auth()->user()->posts()
-            ->where('title', 'LIKE', "%" . request('title') . "%")
-            //->when(request('status') != 'all', fn($query) => $query->where('status', request('status')))
-            /*->when(request('status') != 'all', function ($query) use ($status) {
-                $query->where('status', $status);
-            })*/
-            ->when(request('status') != 'all', function ($query) use ($status) {
-                $query->scopes($status);
-            })
-            ->latest()->paginate();
+        $key = 'posts_' . auth()->id();
+
+//        if (Cache::has($key))
+//            $posts = Cache::get($key);
+//        else {
+//            if (auth()->user()->hasRole('super-admin'))
+//                $posts = Post::query();
+//            else
+//                $posts = auth()->user()->posts();
+//
+//            $posts = $posts->where('title', 'LIKE', "%" . request('title') . "%")
+//                //->when(request('status') != 'all', fn($query) => $query->where('status', request('status')))
+//                /*->when(request('status') != 'all', function ($query) use ($status) {
+//                    $query->where('status', $status);
+//                })*/
+//                ->when(request('status') != 'all', function ($query) use ($status) {
+//                    $query->scopes($status);
+//                })
+//                ->latest()->paginate();
+//
+//            Cache::put($key, $posts);
+//        }
+
+        $posts = Cache::rememberForever($key, function () use ($status) {
+            if (auth()->user()->hasRole('super-admin'))
+                $posts = Post::query();
+            else
+                $posts = auth()->user()->posts();
+
+            $posts = $posts->where('title', 'LIKE', "%" . request('title') . "%")
+                //->when(request('status') != 'all', fn($query) => $query->where('status', request('status')))
+                /*->when(request('status') != 'all', function ($query) use ($status) {
+                    $query->where('status', $status);
+                })*/
+                ->when(request('status') != 'all', function ($query) use ($status) {
+                    $query->scopes($status);
+                })
+                ->latest()->paginate();
+
+            return $posts;
+        });
 
         return view('posts.index', compact('posts'));
     }
@@ -91,6 +123,8 @@ class PostController extends Controller
 
             return $post;
         });
+
+        Cache::forget('posts_' . auth()->id());
 
         return redirect()
             ->route('posts.index')

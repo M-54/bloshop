@@ -2,10 +2,10 @@
     <x-slot name="header">
         <div class="flex justify-between items-center">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Posts') }}
+                {{ __('Products') }}
             </h2>
 
-            <a href="{{ route('posts.create') }}" class="btn btn-primary">Create</a>
+            <a href="{{ route('products.create') }}" class="btn btn-primary">Create</a>
         </div>
     </x-slot>
 
@@ -25,38 +25,27 @@
             @endif
 
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <form action="{{ route('posts.index') }}" class="p-4 w-full grid auto-cols-auto grid-flow-col gap-4 items-end">
-                    <input type="text" name="title" id="title" placeholder="Title" class="input input-bordered"
-                               value="{{ old('title', request('title')) }}">
-
-                    <select name="status" class="select select-bordered w-full">
-                        <option value="all" selected="selected">All</option>
-                        <option value="draft" @if(request('status') == 'draft') selected @endif>Draft</option>
-                        <option value="published" @if(request('status') == 'published') selected @endif>Published</option>
-                    </select>
-
-                    <button type="submit" class="btn btn-primary">Search</button>
-                </form>
-
                 <table class="table w-full table-zebra">
                     <thead>
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Title</th>
-                        <th scope="col">Author</th>
+                        <th scope="col">User</th>
                         <th scope="col">Status</th>
                         <th scope="col">Actions</th>
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($posts as $post)
+                    @foreach($products as $product)
                         <tr>
-                            <th scope="row">{{ $post->id }}</th>
-                            <td>{{ $post->title }}</td>
-                            <td>{{ $post->author->name }}</td>
-                            <td>{{ strtoupper($post->status) }}</td>
+                            <th scope="row">{{ $product->id }}</th>
+
+                            <td>{{ $product->title }} <small class="block">{{ $product->title_en }}</small></td>
+                            <td>{{ $product->user->name }}</td>
+                            <td>{{ $product->status }}</td>
+
                             <td>
-                                <a href="{{ route('posts.edit', $post) }}" class="btn btn-xs">Edit</a>
+                                <a href="{{ route('products.edit', $product) }}" class="btn btn-xs">Edit</a>
                             </td>
                         </tr>
                     @endforeach
@@ -65,8 +54,7 @@
             </div>
 
             <div class="mt-6">
-                {{--                {{ $posts->links('pagination.custom-pagination') }}--}}
-                {{ $posts->links() }}
+                {{ $products->links() }}
             </div>
         </div>
     </div>

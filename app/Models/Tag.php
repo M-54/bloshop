@@ -20,6 +20,11 @@ class Tag extends Model
         return $this->belongsToMany(Post::class);
     }
 
+    public function products()
+    {
+        return $this->belongsToMany(Tag::class);
+    }
+
     public function sluggable(): array
     {
         return [

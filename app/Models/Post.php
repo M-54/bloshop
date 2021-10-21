@@ -20,6 +20,10 @@ class Post extends Model
         'author_id', 'title', 'slug', 'content', 'status'
     ];
 
+    protected $with = [
+        'author'
+    ];
+
     protected $withCount = [
         'images',
         'comments'

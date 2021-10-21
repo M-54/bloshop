@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\Tag;
 use App\Observers\PostObserver;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -30,6 +31,9 @@ class AppServiceProvider extends ServiceProvider
         Post::observe(PostObserver::class);
 
         $categories = Category::all();
+        $tags = Tag::all();
+
         View::share('categories', $categories);
+        View::share('tags', $tags);
     }
 }

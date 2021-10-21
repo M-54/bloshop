@@ -31,6 +31,9 @@ Route::group([
     Route::resource('posts', \App\Http\Controllers\PostController::class)
         ->except(['show']);
 
+    Route::resource('products', \App\Http\Controllers\ProductController::class)
+        ->except(['show']);
+
     Route::get('catag', [\App\Http\Controllers\CatagController::class, 'index'])->name('catag.index');
     Route::get('catag/create', [\App\Http\Controllers\CatagController::class, 'create'])->name('catag.create');
     Route::post('catag', [\App\Http\Controllers\CatagController::class, 'store'])->name('catag.store');
@@ -47,5 +50,17 @@ Route::group([
 });
 
 Route::get('posts/{post}', [\App\Http\Controllers\PostController::class, 'show'])->name('posts.show');
+Route::get('products/{product}', [\App\Http\Controllers\ProductController::class, 'show'])->name('products.show');
 
 require __DIR__ . '/auth.php';
+
+Route::get('set', function () {
+    $user = \App\Models\User::find(1);
+    \Illuminate\Support\Facades\Cache::put('user1', $user);
+});
+
+Route::get('get', function () {
+    return \Illuminate\Support\Facades\Cache::forget('akey');
+});
+
+Route::get('sample', \App\Http\Controllers\SampleController::class);
