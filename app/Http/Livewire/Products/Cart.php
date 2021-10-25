@@ -20,7 +20,7 @@ class Cart extends Component
 
     public function mount()
     {
-        $cart = session()->get('cart');
+        $cart = session()->get('cart', []);
         foreach ($cart as $key => $value) {
             foreach ($value['variations'] as $key2 => $variation) {
                 $this->count += $variation['count'];
@@ -31,7 +31,7 @@ class Cart extends Component
     public function updateCount()
     {
         $this->count = 0;
-        $cart = session()->get('cart');
+        $cart = session()->get('cart', []);
         foreach ($cart as $key => $value) {
             foreach ($value['variations'] as $key2 => $variation) {
                 $this->count += $variation['count'];

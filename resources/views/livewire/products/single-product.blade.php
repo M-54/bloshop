@@ -11,7 +11,7 @@
             <img src="{{ \Illuminate\Support\Facades\Storage::url($product->images[0]->url) }}"
                  alt="{{ $product->title_en }}" style="object-fit: cover;">
         </div>
-        <h4 class="card-title pricing-card-title">{{ number_format($variation->price) }}T</h4>
+        <h4 class="card-title pricing-card-title">{{ number_format($variation->price ?? $product->price) }}T</h4>
         <select class="form-select mt-3 mb-4" wire:model="selected_variation">
             <option value="null" disabled>Select Variation</option>
             @foreach($product->variations as $variation)

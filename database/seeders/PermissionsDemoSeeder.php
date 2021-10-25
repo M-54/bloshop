@@ -29,6 +29,8 @@ class PermissionsDemoSeeder extends Seeder
 
         $role_writer = Role::create(['name' => 'writer']);
 
+        $role_shopper = Role::create(['name' => 'shopper']);
+
         Permission::create(['name' => 'create users']);
         Permission::create(['name' => 'edit users']);
         Permission::create(['name' => 'delete users']);
@@ -41,15 +43,25 @@ class PermissionsDemoSeeder extends Seeder
         Permission::create(['name' => 'edit comments']);
         Permission::create(['name' => 'delete comments']);
 
+        Permission::create(['name' => 'create products']);
+        Permission::create(['name' => 'edit products']);
+        Permission::create(['name' => 'delete products']);
+        Permission::create(['name' => 'publish products']);
+
         //$role_admin->givePermissionTo('create users');
         $role_admin->givePermissionTo('edit users');
         $role_admin->givePermissionTo('publish posts');
         $role_admin->givePermissionTo('edit comments');
         $role_admin->givePermissionTo('delete comments');
+        $role_admin->givePermissionTo('publish products');
 
         $role_writer->givePermissionTo('create posts');
         $role_writer->givePermissionTo('edit posts');
         $role_writer->givePermissionTo('delete posts');
+
+        $role_shopper->givePermissionTo('create products');
+        $role_shopper->givePermissionTo('edit products');
+        $role_shopper->givePermissionTo('delete products');
 
         /**
          * @var $user User

@@ -14,7 +14,7 @@ class CartController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $cart = session()->get('cart');
+        $cart = session()->get('cart', []);
 
         $my_cart = [];
         foreach ($cart as $key => $value) {

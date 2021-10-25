@@ -48,7 +48,15 @@ class Product extends Model
 
     public function getPriceAttribute()
     {
-        return $this->variations()->orderBy('price')->first()->price;
+        return $this->variations()->orderBy('price')->first()->price ?? 0;
+    }
+
+    public function getStatusAttribute()
+    {
+        if ($this->variations()->count() == 0)
+            return 'empty';
+
+        return $this->attributes['status'];
     }
 
     public function sluggable(): array

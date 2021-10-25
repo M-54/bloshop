@@ -33,6 +33,12 @@
                             {{ __('Comments') }}
                         </x-nav-link>
                     @endcan
+
+                    @can('create products')
+                        <x-nav-link :href="route('products.index')" :active="request()->routeIs('products.index')">
+                            {{ __('Products') }}
+                        </x-nav-link>
+                    @endcan
                 </div>
             </div>
 
